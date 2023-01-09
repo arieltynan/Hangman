@@ -16,7 +16,7 @@ def load_words():
     # wordlist: list of strings
     wordlist = line.split()
     print("  ", len(wordlist), "words loaded.")
-    return wordlist
+    return wordlist 
 
 def chooseWord(wordlist):
     return random.choice(wordlist)
