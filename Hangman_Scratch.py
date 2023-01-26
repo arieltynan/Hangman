@@ -40,10 +40,12 @@ for i in range(0,len(secret_word)):
 
 misses = 0 #count number of misses
 charCount = 0 #total number of chars guessed and filled in
+badLetters = [] #list of bad letters guessed
 
 def clicked(r,c):
     global misses #count of incorrect guesses
     global charCount #total number of chars guessed and filled into the word (dd is 2)
+    global badLetters #list of bad letters guessed
 
     #If successful guess
     if alphaBet[r][c]['text'] in charList:
@@ -60,6 +62,7 @@ def clicked(r,c):
         alphaBet[r][c].config(state=DISABLED, 
                 bg = "pink"
                 )
+        badLetters.append(alphaBet[r][c]["text"])
         misses += 1
         if misses != 5:
             buttText.config(text = f"You have {6 - misses} more tries ")
@@ -114,6 +117,30 @@ def checkMissed(x):
         # Frown
         canvas.create_line(80,50,95,50)
 
+def showPossibleMatches(x):
+
+    #Find possible words
+    possList = []
+    for word in wordlist:
+        validWord = True
+        if len(word) == len(x):
+            for char in word:
+                if char in badLetters:
+                    validWord = False
+                    break
+            for i in range(0,len(word)):
+                if word[i] != x[i] and x[i] != '_':
+                    validWord = False
+                    break
+            if validWord == True:
+                possList.append(word)
+
+    # Init button for displaying possible words to user
+    if len(possList) > 10:
+        buttPossibilities.config(text = "There are too many possible words to list!")
+    else:
+        buttPossibilities.config(text = possList)
+
 # Alphabet, 26 char-long string
 alphaBet = [['a'],['b'],['c'],['d'],['e'],['f'],['g'],['h'],['i'],['j'],['k'],['l'],['m']],[['n'],['o'],['p'],['q'],['r'],['s'],['t'],['u'],['v'],['w'],['x'],['y'],['z']]
 
@@ -134,6 +161,15 @@ buttText = Button(
                         text = "Welcome to HangMan! You have 6 guesses to guess the secret word"
                         )  
 buttText.grid(row = 1, columnspan = 13, sticky = EW, pady = 0)
+
+# Init button for possible word disp
+buttPossibilities = Button(
+                        font = ("Helvetica","10"),
+                        activebackground= 'blue',
+                        state=DISABLED,
+                        )  
+buttPossibilities.grid(rowspan = 2, columnspan = 13, sticky = E, pady = 0)
+
 
 # Generate drawing window
 canvas = Canvas(width=200, height=200)
@@ -156,5 +192,15 @@ for i in range(2):
                         text = alphaBet[i][j]
                         )
         alphaBet[i][j].grid(row = i+10, column = j)
+
+# Init button for showing potential words
+buttShow = Button(
+                        height = 1, width = 20,
+                        font = ("Helvetica","10"),
+                        command = lambda : showPossibleMatches(wordDisp),
+                        activebackground= 'blue',
+                        text = "Show possible words (hint):"
+                        )
+buttShow.grid(row = 2, columnspan = 13, sticky = W, pady = 0)
 
 mainloop()           
