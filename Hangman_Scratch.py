@@ -84,6 +84,7 @@ def checkWin():
                 alphaBet[i][j].config(state=DISABLED
                 )
         buttText.config(text = "You win! You have guessed the secret word")
+        buttShow.config(state = DISABLED)
     #CheckWin False condition, 6 wrong guesses
     elif misses == 6:
         buttWord.config(bg = "pink")
@@ -92,6 +93,7 @@ def checkWin():
                 alphaBet[i][j].config(state=DISABLED
                 )
         buttText.config(text = f"You lose! The secret word was {secret_word}")
+        buttShow.config(state = DISABLED)
 
 #Check number of misses and draw Hangman accordingly
 def checkMissed(x):
@@ -118,7 +120,6 @@ def checkMissed(x):
         canvas.create_line(80,50,95,50)
 
 def showPossibleMatches(x):
-
     #Find possible words
     possList = []
     for word in wordlist:
@@ -162,23 +163,23 @@ buttText = Button(
                         )  
 buttText.grid(row = 1, columnspan = 13, sticky = EW, pady = 0)
 
-# Init button for possible word disp
+# Init button for giving users a hint showing possible words
+buttShow = Button(
+                        height = 1, width = 20,
+                        font = ("Helvetica","10"),
+                        command = lambda : showPossibleMatches(wordDisp),
+                        activebackground= 'blue',
+                        text = "Show possible words (hint):"
+                        )
+buttShow.grid(row = 2, columnspan = 13, sticky = W, pady = 0)
+
+# Init button for displaying possible words
 buttPossibilities = Button(
                         font = ("Helvetica","10"),
                         activebackground= 'blue',
                         state=DISABLED,
                         )  
-buttPossibilities.grid(rowspan = 2, columnspan = 13, sticky = E, pady = 0)
-
-
-# Generate drawing window
-canvas = Canvas(width=200, height=200)
-canvas.grid(row=0, columnspan = 13, sticky = E, pady = 0)
-
-# Draw Gallows
-canvas.create_line(10, 10, 10, 200)
-canvas.create_line(10, 10, 150, 10)
-canvas.create_line(10, 200, 50, 200)
+buttPossibilities.grid(row = 2, columnspan = 13, sticky = E, pady = 0)
 
 # Init buttons for alphabet
 for i in range(2):
@@ -193,14 +194,13 @@ for i in range(2):
                         )
         alphaBet[i][j].grid(row = i+10, column = j)
 
-# Init button for showing potential words
-buttShow = Button(
-                        height = 1, width = 20,
-                        font = ("Helvetica","10"),
-                        command = lambda : showPossibleMatches(wordDisp),
-                        activebackground= 'blue',
-                        text = "Show possible words (hint):"
-                        )
-buttShow.grid(row = 2, columnspan = 13, sticky = W, pady = 0)
+# Generate drawing window
+canvas = Canvas(width=200, height=200)
+canvas.grid(row=0, columnspan = 13, sticky = E, pady = 0)
+
+# Draw Gallows
+canvas.create_line(10, 10, 10, 200)
+canvas.create_line(10, 10, 150, 10)
+canvas.create_line(10, 200, 50, 200)
 
 mainloop()           
