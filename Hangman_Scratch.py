@@ -27,7 +27,7 @@ def structWord(word):
     charList = []
     for i in range(0,len(word)):
         charList.append(word[i])
-    print(charList)
+    #print(charList)
     return charList
 
 
@@ -35,7 +35,6 @@ def structWord(word):
 # Load the list of words into the variable wordlist
 # so that it can be accessed from anywhere in the program
 wordlist = load_words()
-
 
 misses = 0
 charCount = 0
@@ -69,20 +68,19 @@ def clicked(r,c):
 
 def checkWin():
     if charCount == len(charList):
-        print("You have guessed the word! You win!")
+        print(f"You have guessed the word {secret_word}! You win!")
         for i in range(2): #disable all buttons
             for j in range(13):
                 alphaBet[i][j].config(state=DISABLED
                 )
     elif misses == 6:
-        print("You made 6 incorrect guesses! You lose.")
+        print("You lose!")
         print(f"The word was {secret_word}.")
         for i in range(2): #disable all buttons
             for j in range(13):
                 alphaBet[i][j].config(state=DISABLED
                 )
  
-
 #Alphabet, 26 char-long string
 alphaBet = [['a'],['b'],['c'],['d'],['e'],['f'],['g'],['h'],['i'],['j'],['k'],['l'],['m']],[['n'],['o'],['p'],['q'],['r'],['s'],['t'],['u'],['v'],['w'],['x'],['y'],['z']]
 
@@ -102,11 +100,11 @@ for i in range(2):
 secret_word = chooseWord(wordlist)
 #hangman(secret_word)
 charList = structWord(secret_word)
-print(secret_word)
+#print(secret_word)
 
 #Display of secret word to player
 wordDisp = []
 for i in range(0,len(secret_word)):
-    wordDisp.append('')
-
+    wordDisp.append("_")
+print(wordDisp)
 mainloop()           
